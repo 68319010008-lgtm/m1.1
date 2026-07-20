@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuildMetric Pro - แปลงหน่วยวัดความยาวสำหรับช่างและวิศวกร</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-main: #f0f4f8;
+            --primary: #1e293b;
+            --primary-accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --orange-brand: #f97316;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            --radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Header --- */
+        header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--orange-brand), #ea580c);
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+
+        .logo-text h1 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .logo-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            display: block;
+        }
+
+        .badge-pro {
+            background: #eff6ff;
+            color: var(--primary-accent);
+            border: 1px solid #bfdbfe;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* --- Main Layout --- */
+        main {
+            flex: 1;
+            max-width: 1000px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* --- Converter Card --- */
+        .converter-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .card-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        /* Converter Form Controls */
+        .converter-body {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .input-box {
+            background: #f8fafc;
+            border: 1.5px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .input-box:focus-within {
+            border-color: var(--primary-accent);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .input-box label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .input-wrapper select {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary);
+            cursor: pointer;
+            outline: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Swap Button */
+        .swap-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-swap {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-swap:hover {
+            background: var(--primary-accent);
+            color: white;
+            border-color: var(--primary-accent);
+            transform: rotate(180deg) scale(1.05);
+        }
+
+        /* Result Actions */
+        .result-footer {
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px dashed var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .formula-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .btn-copy {
+            background: transparent;
+            border: none;
+            color: var(--primary-accent);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: #eff6ff;
+        }
+
+        /* --- Reference Table Card --- */
+        .reference-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .reference-card h3 {
+            font-size: 1rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ref-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .ref-item {
+            background: #f8fafc;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #f1f5f9;
+        }
+
+        .ref-item span:last-child {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: #ffffff;
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Toast Alert */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .converter-card {
+                padding: 1.5rem;
+            }
+
+            .converter-body {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .btn-swap {
+                transform: rotate(90deg);
+            }
+
+            .btn-swap:hover {
+                transform: rotate(270deg) scale(1.05);
+            }
+
+            .result-footer {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Header Navigation -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-compass-drafting"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>BuildMetric Pro</h1>
+                    <span>Home Design & Engineering Tool</span>
+                </div>
+            </a>
+            <span class="badge-pro"><i class="fa-solid fa-check-circle"></i> พร้อมใช้งานหน้างาน</span>
+        </div>
+    </header>
+
+    <!-- Main App Content -->
+    <main>
+        <div class="converter-card">
+            <div class="card-header">
+                <h2>แปลงหน่วยความยาวงานก่อสร้าง</h2>
+                <p>คำนวณแม่นยำ รองรับระบบเมตริก (Metric) และอิมพีเรียล (Imperial)</p>
+            </div>
+
+            <div class="converter-body">
+                <!-- From Section -->
+                <div class="input-box">
+                    <label for="from-value">ค่าเริ่มต้น</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="from-value" value="1" placeholder="0" step="any">
+                        <select id="from-unit">
+                            <option value="mm">มิลลิเมตร (mm)</option>
+                            <option value="cm">เซนติเมตร (cm)</option>
+                            <option value="m" selected>เมตร (m)</option>
+                            <option value="km">กิโลเมตร (km)</option>
+                            <option value="in">นิ้ว (in)</option>
+                            <option value="ft">ฟุต (ft)</option>
+                            <option value="yd">หลา (yd)</option>
+                            <option value="mi">ไมล์ (mi)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Swap Action Button -->
+                <div class="swap-wrapper">
+                    <button class="btn-swap" id="swap-btn" title="สลับหน่วย">
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    </button>
+                </div>
+
+                <!-- To Section -->
+                <div class="input-box" style="background: #f1f5f9;">
+                    <label for="to-value">ผลลัพธ์ที่ได้</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="to-value" readonly placeholder="0">
+                        <select id="to-unit">
+                            <option value="mm">มิลลิเมตร (mm)</option>
+                            <option value="cm">เซนติเมตร (cm)</option>
+                            <option value="m">เมตร (m)</option>
+                            <option value="km">กิโลเมตร (km)</option>
+                            <option value="in">นิ้ว (in)</option>
+                            <option value="ft" selected>ฟุต (ft)</option>
+                            <option value="yd">หลา (yd)</option>
+                            <option value="mi">ไมล์ (mi)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-footer">
+                <div class="formula-text" id="formula-display">
+                    1 เมตร = 3.28084 ฟุต
+                </div>
+                <button class="btn-copy" id="copy-btn">
+                    <i class="fa-regular fa-copy"></i> คัดลอกผลลัพธ์
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Reference Card -->
+        <div class="reference-card">
+            <h3><i class="fa-solid fa-book-bookmark" style="color: var(--orange-brand);"></i> อัตราแปลงหน่วยที่ใช้บ่อยในงานช่าง</h3>
+            <div class="ref-grid">
+                <div class="ref-item"><span>1 นิ้ว (in)</span> <span>25.4 มม. (mm)</span></div>
+                <div class="ref-item"><span>1 ฟุต (ft)</span> <span>30.48 ซม. (cm)</span></div>
+                <div class="ref-item"><span>1 เมตร (m)</span> <span>100 ซม. (cm)</span></div>
+                <div class="ref-item"><span>1 หลา (yd)</span> <span>0.9144 เมตร (m)</span></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 BuildMetric Studio. Designed for Architects & Structural Engineers.</p>
+    </footer>
+
+    <!-- Toast Component -->
+    <div class="toast" id="toast">คัดลอกลงคลิปบอร์ดแล้ว!</div>
+
+    <!-- Application Logic -->
+    <script>
+        // อัตราการแปลงหน่วยเปรียบเทียบกับ 1 เมตร
+        const unitRatios = {
+            mm: 0.001,
+            cm: 0.01,
+            m: 1,
+            km: 1000,
+            in: 0.0254,
+            ft: 0.3048,
+            yd: 0.9144,
+            mi: 1609.344
+        };
+
+        const unitNames = {
+            mm: 'มิลลิเมตร', cm: 'เซนติเมตร', m: 'เมตร', km: 'กิโลเมตร',
+            in: 'นิ้ว', ft: 'ฟุต', yd: 'หลา', mi: 'ไมล์'
+        };
+
+        // DOM Selectors
+        const fromValue = document.getElementById('from-value');
+        const fromUnit = document.getElementById('from-unit');
+        const toValue = document.getElementById('to-value');
+        const toUnit = document.getElementById('to-unit');
+        const swapBtn = document.getElementById('swap-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const formulaDisplay = document.getElementById('formula-display');
+        const toast = document.getElementById('toast');
+
+        // Main Calculation
+        function calculate() {
+            const val = parseFloat(fromValue.value);
+            
+            if (isNaN(val) || val === null) {
+                toValue.value = '';
+                formulaDisplay.textContent = 'กรุณากรอกตัวเลขที่ถูกต้อง';
+                return;
+            }
+
+            // Calculation logic via base unit (Meters)
+            const baseInMeters = val * unitRatios[fromUnit.value];
+            const convertedVal = baseInMeters / unitRatios[toUnit.value];
+
+            // Smart Decimal Formatting
+            let formattedResult;
+            if (Number.isInteger(convertedVal)) {
+                formattedResult = convertedVal.toString();
+            } else {
+                // แสดงทศนิยมไม่เกิน 5 ตำแหน่ง และตัด 0 ตัวท้ายออก
+                formattedResult = parseFloat(convertedVal.toFixed(5)).toString();
+            }
+
+            toValue.value = formattedResult;
+
+            // Update Formula Text
+            const singleBase = 1 * unitRatios[fromUnit.value];
+            const singleConverted = parseFloat((singleBase / unitRatios[toUnit.value]).toFixed(5));
+            formulaDisplay.textContent = `อัตราส่วน: 1 ${unitNames[fromUnit.value]} = ${singleConverted} ${unitNames[toUnit.value]}`;
+        }
+
+        // Swap functionality
+        function swap() {
+            const temp = fromUnit.value;
+            fromUnit.value = toUnit.value;
+            toUnit.value = temp;
+            calculate();
+        }
+
+        // Copy to clipboard
+        function copyResult() {
+            if (!toValue.value) return;
+            
+            const textToCopy = `${toValue.value} ${toUnit.value}`;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast();
+            });
+        }
+
+        function showToast() {
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Listeners
+        fromValue.addEventListener('input', calculate);
+        fromUnit.addEventListener('change', calculate);
+        toUnit.addEventListener('change', calculate);
+        swapBtn.addEventListener('click', swap);
+        copyBtn.addEventListener('click', copyResult);
+
+        // Initial Run
+        calculate();
+    </script>
+</body>
+</html>
